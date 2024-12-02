@@ -8,10 +8,12 @@ let paragraph = document.createElement('p')
 
 
 // where all books will be stored
-const myLibrary = [{"title": "Introduction To Programming",
-                    "author": "Nathan",
-                    "datePublished": "2000",
-}]
+const myLibrary = [
+    {
+    "title": "Introduction To Programming",
+    "author": "Nathan",
+    "datePublished": "2000",
+    }]
 
 // user input book details
 function addBookDetails() {
@@ -22,7 +24,7 @@ function addBookDetails() {
         "author": prompt("Enter book author:") || "N/A",
         "datePublished": prompt("Enter date published:") || "N/A"
         // "values": function (){
-        //     return [this.title,this.author,this.datePublished]
+        //  return [this.title,this.author,this.datePublished]
         // }
         }
 
@@ -39,9 +41,21 @@ function displayBooksInLibrary(book) {
     container.innerHTML = ""
 
     myLibrary.forEach((book) => {
-        let paragraph = document.createElement('p')
-        paragraph.innerText = book.title
-        container.append(paragraph)
+
+        let bookContainer = document.createElement('div')   //card/book container
+        
+        let title = document.createElement('p')
+        title.innerText = book.title
+
+        let author = document.createElement('p')
+        author.innerText = book.author
+
+        let datePublished = document.createElement('p')
+        datePublished.innerText = book.datePublished
+
+
+        bookContainer.append(title,author,datePublished)  //each iter the book has its own div
+        container.append(bookContainer)
         console.log(book.title)
     })
 
@@ -50,17 +64,7 @@ function displayBooksInLibrary(book) {
 
 window.onload = displayBooksInLibrary()
 
-// onclick let user add book details then display the books
+
 addBook.addEventListener("click", ()=> {
    addBookDetails()
-//    displayBooksInLibrary()
 })
-
-    
-
-
-
-
-
-
-// addBookToLibrary(book(title,author,datePublished))
