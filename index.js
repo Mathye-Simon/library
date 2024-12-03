@@ -3,6 +3,10 @@ const container = document.getElementById("container")
 let addBook = document.createElement('button')
 addBook.innerText='Add Book'
 
+let submitButton = document.createElement('input')
+submitButton.type = 'button'
+submitButton.value = 'Submit'
+
 // create elements
 let div = document.createElement('div')
 let paragraph = document.createElement('p')
@@ -22,27 +26,17 @@ const myLibrary = [
 }]
 
 // user input book details
-function addBookDetails() {
-
-    let bookDetails = 
-        {
-        "title": (prompt("Enter book title:") || "N/A"),
-        "author": prompt("Enter book author:") || "N/A",
-        "datePublished": prompt("Enter date published:") || "N/A"
-        // "values": function (){
-        //  return [this.title,this.author,this.datePublished]
-        // }
-        }
+function userAddBook() {
 
     myLibrary.push(bookDetails)
-    displayBooksInLibrary()
+    
     return(myLibrary)
                 
 }
 
 
-function displayBooksInLibrary(book) {
-// awesome thing, when function is called it 
+function displayBooksInLibrary() {
+// awesome thing, when function sis called it 
 // clears the existing elements before adding others dynamically  
     container.innerHTML = ""
     let count = 0
@@ -82,11 +76,9 @@ function displayBooksInLibrary(book) {
 window.onload = displayBooksInLibrary()
 
 
-// addBook.addEventListener("click", ()=> {
-//    addBookDetails()
-// })
 
-let form = document.createElement('form')
+const form = document.createElement('form')
+form.setAttribute('class','hidden')
 function generateForm (){
 // create input fields
     for (let i = 1; i <= 3; i++) {
@@ -94,32 +86,57 @@ function generateForm (){
         
         if (i == 1) {
             input.type = 'text';
+            input.setAttribute('id', 'userTitle')
             input.placeholder = 'Enter Book Title'
         }
         else if (i == 2) {
             input.type = 'text';
+            input.setAttribute('id', 'userAuthor')
             input.placeholder = 'Enter Book Author'
             
         }
         else if (i == 3) {
             input.type = 'date'
+            input.setAttribute('id', 'userDatePublished')
             input.placeholder = 'Enter Date Published'
         }
         form.append(input)
     }
 
     
-    let submitButton = document.createElement('input')
-    submitButton.type = 'button'
-    submitButton.value = 'Submit'
+
     form.append(submitButton)
 
-
-    
     container.append(form)
 }
 
+// add and generate form
 addBook.addEventListener('click', () => {
-    form.style.display = 'flex'
+    form.classList.remove('hidden')
+    addBook.classList.add('hidden')
+    
+    generateForm()
+    form.reset()
 })
-generateForm()
+
+function getFormValues () {
+
+}
+
+submitButton.addEventListener('click', ()=>{
+    let userTitle = document.getElementById('userTitle').value
+    let userDatePublished = document.getElementById('userDatePublished').value
+    let userAuthor = document.getElementById('userAuthor').value
+
+    const formData = {
+        "title": userTitle,
+        "author": userAuthor,
+        "datePublished": userDatePublished
+    }
+    myLibrary.push(formData)
+    form.innerHTML = ''
+    form.classList.add ('hidden')
+    addBook.classList.remove('hidden')
+    displayBooksInLibrary()
+    
+})
