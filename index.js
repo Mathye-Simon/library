@@ -29,7 +29,7 @@ function userAddBook() {
 
 
 function displayBooksInLibrary() {
-// awesome thing, when function sis called it 
+// awesome thing, when function is called it 
 // clears the existing elements before adding others dynamically  
     libraryContainer.innerHTML = ""
     let count = 0
