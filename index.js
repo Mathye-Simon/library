@@ -1,11 +1,14 @@
 // accessing the html elements
-const container = document.getElementById("container")
-let addBook = document.createElement('button')
+const libraryContainer = document.getElementById("container")
+const formContainer = document.getElementById("formContainer")
+let addBook = document.getElementById('button')
 addBook.innerText='Add Book'
 
 let submitButton = document.createElement('input')
 submitButton.type = 'button'
 submitButton.value = 'Submit'
+
+
 
 // create elements
 let div = document.createElement('div')
@@ -13,24 +16,14 @@ let paragraph = document.createElement('p')
 
 
 // where all books will be stored
-const myLibrary = [
-    {
-    "title": "Introduction To Programming",
-    "author": "Mathye Tsakane",
-    "datePublished": "2000-02-24",
-    },
-    { 
-    title: "To Kill a Mockingbird",
-    author: "Harper Lee", 
-    datePublished: "1960-07-11" 
-}]
+const userLibrary = []
 
 // user input book details
 function userAddBook() {
 
-    myLibrary.push(bookDetails)
+    userLibrary.push(bookDetails)
     
-    return(myLibrary)
+    return(userLibrary)
                 
 }
 
@@ -38,43 +31,63 @@ function userAddBook() {
 function displayBooksInLibrary() {
 // awesome thing, when function sis called it 
 // clears the existing elements before adding others dynamically  
-    container.innerHTML = ""
+    libraryContainer.innerHTML = ""
     let count = 0
+    let rowOfBooks = document.createElement('div')
+    rowOfBooks.setAttribute('class','row')
 
-    myLibrary.forEach((book) => {
+    let rowOfBooks2 = document.createElement('div')
+    rowOfBooks2.setAttribute('class','row')
+
+
+    userLibrary.forEach((book) => {
         count +=1
-        let bookContainer = document.createElement('div')   //card/book container
-        bookContainer.setAttribute('class',`book${count}`)
-        bookContainer.setAttribute('id','bookContainer')       
+            // let rowOfBooks = document.createElement('div')
+            // rowOfBooks.setAttribute('id','row1')
+
+            let bookContainer = document.createElement('div')
+            bookContainer.setAttribute('id','bookContainer')          //card/book Container
+            bookContainer.setAttribute('class',`book${count}`)
+
+            let title = document.createElement('p')
+            title.setAttribute('class',`title${count}`)
+            title.setAttribute('id','title')       
+            title.innerText = book.title
+
+            let author = document.createElement('p')
+            author.setAttribute('class',`author${count}`)
+            author.setAttribute('id','author')       
+            author.innerText = book.author
+
+            let datePublished = document.createElement('p')
+            datePublished.setAttribute('id','datePublished')       
+            datePublished.setAttribute('class',`datePublished${count}`)
+            datePublished.innerText = book.datePublished
+
+
+            if (rowOfBooks.children.length < 3) {
+                bookContainer.append(title,author,datePublished)  //each iter the book has its own div
+                rowOfBooks.append(bookContainer)
+                libraryContainer.append(rowOfBooks)
+            }
+
+            // add another row
+            else if(rowOfBooks.children.length == 3) {
+                bookContainer.append(title,author,datePublished)  //each iter the book has its own div
+                rowOfBooks2.append(bookContainer)
+                libraryContainer.append(rowOfBooks2)
+            }
+        })
 
 
         
-        let title = document.createElement('p')
-        title.setAttribute('class',`title${count}`)
-        title.setAttribute('id','title')       
-        title.innerText = book.title
-
-        let author = document.createElement('p')
-        author.setAttribute('class',`author${count}`)
-        author.setAttribute('id','author')       
-        author.innerText = book.author
-
-        let datePublished = document.createElement('p')
-        datePublished.setAttribute('id','datePublished')       
-        datePublished.setAttribute('class',`datePublished${count}`)
-        datePublished.innerText = book.datePublished
+    }
 
 
-        bookContainer.append(title,author,datePublished)  //each iter the book has its own div
-        container.append(bookContainer,addBook)
-        console.log(book.title)
-    })
 
 
-}
-
-window.onload = displayBooksInLibrary()
-
+window.onload
+   
 
 
 const form = document.createElement('form')
@@ -107,13 +120,14 @@ function generateForm (){
 
     form.append(submitButton)
 
-    container.append(form)
+    formContainer.append(form)
 }
 
 // add and generate form
 addBook.addEventListener('click', () => {
     form.classList.remove('hidden')
     addBook.classList.add('hidden')
+    formContainer.classList.remove('hidden')
     
     generateForm()
     form.reset()
@@ -133,10 +147,11 @@ submitButton.addEventListener('click', ()=>{
         "author": userAuthor,
         "datePublished": userDatePublished
     }
-    myLibrary.push(formData)
+    userLibrary.push(formData)
     form.innerHTML = ''
     form.classList.add ('hidden')
     addBook.classList.remove('hidden')
+    formContainer.classList.add ('hidden')
     displayBooksInLibrary()
     
 })
